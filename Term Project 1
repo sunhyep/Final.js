@@ -1,0 +1,98 @@
+<DOCTYPE html>
+    <html>
+        <head>
+            <title>Image Slider</title>
+            <style>
+                .slider-btn {
+                    cursor: pointer;
+                }
+            
+                .navigation {
+                    text-align: center;
+                    margin-top: 10px;
+                }
+            
+                .nav-btn {
+                    display: inline-block;
+                    padding: 5px 10px;
+                    margin: 0 5px;
+                    cursor: pointer;
+                }
+            </style>
+            
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            
+            <script>
+                $(document).ready(function () {
+                    const width = 460;
+                    const height = 300;
+                    let current = 0;
+                    let interval;
+            
+                    const moveTo = function () {
+                        $('.images').animate({
+                            left: -current * width
+                        }, 1000);
+                    };
+            
+                    const imageLength = $('.slider').find('.image').length;
+            
+                    for (let i = 0; i < imageLength; i++) {
+                        $('<button class="nav-btn"></button>')
+                            .attr('data-position', i)
+                            .text(i)
+                            .click(function () {
+                                current = $(this).attr('data-position');
+                                moveTo();
+                                clearInterval(interval);
+                            })
+                            .appendTo('.navigation');
+                    }
+            
+                    $('.slider').css({
+                        position: 'relative',
+                        width: width,
+                        height: height,
+                        overflow: 'hidden'
+                    });
+            
+                    $('.images').css({
+                        position: 'absolute',
+                        width: width * imageLength,
+                    });
+            
+                    $('.image').css({
+                        margin: 0,
+                        padding: 0,
+                        width: width,
+                        height: height,
+                        display: 'block',
+                        float: 'left'
+                    });
+            
+                    // 3초 마다 슬라이더 이동
+                    interval = setInterval(function () {
+                        current = (current + 1) % imageLength;
+                        moveTo();
+                    }, 3000);
+                });
+            </script>
+        </head>
+        <body>
+            <div class="slider">
+                <div class="images">
+                    <p>2201702 박선혜</p>
+                    <img class="image" src="https://via.placeholder.com/460x300?text=image_0" />
+                    <img class="image" src="https://via.placeholder.com/460x300?text=image_1" />
+                    <img class="image" src="https://via.placeholder.com/460x300?text=image_2" />
+                    <img class="image" src="https://via.placeholder.com/460x300?text=image_3" />
+                    <div class="image">
+                        <h1>이미지가 아닌것</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="navigation"></div>
+        </body>
+    </html>
+</DOCTYPE>
+
